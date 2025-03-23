@@ -12,19 +12,22 @@ function PokeResult() {
     const [pokeData, setPokeData] = useState([]);
     const [loading, setLoading] = useState(false);
 
-    const fetchPokeData = async () => {
-        try {
-            setLoading(true);
-            const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${params.pokeName}`)
-            const data = await response.json();
-            setPokeData(data);
-            setLoading(false);
-        } catch (error) {
-            console.log(error);
-        }
-    }
+
 
     useEffect(() => {
+        const fetchPokeData = async () => {
+            setLoading(true);
+            try {
+                const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${params.pokeName}`)
+                const data = await response.json();
+                setPokeData(data);
+
+            } catch (error) {
+                console.log(error);
+            }
+            setLoading(false);
+        }
+
         fetchPokeData();
     }, []);
 
@@ -38,7 +41,14 @@ function PokeResult() {
                     ) : (
                         <>
                             <h3 className="text-3xl">{pokeData.name}</h3>
-                            <Image src={pokeData.sprites?.other.home.front_default} width={300} height={300} alt="poke" />
+                            {pokeData.sprites?.other.home.front_default && (
+                                <Image
+                                    src={pokeData.sprites.other.home.front_default}
+                                    width={300}
+                                    height={300}
+                                    alt="poke"
+                                />
+                            )}
                             <div className="nt-5">
                                 <p className="my-3">Weight: {pokeData.weight}</p>
                                 <p className="my-3">
